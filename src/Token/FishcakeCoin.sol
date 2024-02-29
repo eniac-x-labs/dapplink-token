@@ -17,6 +17,11 @@ contract FishcakeCoin is ERC20, Ownable {
 
     }
 
+    modifier onlyRedemptionPool() {
+        require(msg.sender == RedemptionPool,"Only RedemptionPool can call this function");
+        _;
+    }
+
     function setPoolAddress(address _MiningPool, address _DirectSalePool, address _InvestorSalePool, address _NFTSalesRewardsPool, address _EarlyStageAirdropsPool, address _FoundationPool) public onlyOwner {
 
         MiningPool = _MiningPool;
@@ -27,6 +32,13 @@ contract FishcakeCoin is ERC20, Ownable {
         FoundationPool = _FoundationPool;
 
     }
+
+    function setRedemptionPool(address _RedemptionPool) public onlyOwner {
+        RedemptionPool = _RedemptionPool;
+    }
+
+
+
 
 
     function PoolAllocation() public onlyOwner{
@@ -44,6 +56,10 @@ contract FishcakeCoin is ERC20, Ownable {
         _mint(EarlyStageAirdropsPool, MaxTotalSupply / 10); // 10% of total supply
         _mint(FoundationPool, MaxTotalSupply / 10); // 10% of total supply
         MintingFinished = true;
+    }
+
+    function burn(address user, uint256 _amount) public onlyRedemptionPool {
+        _burn(user, _amount);
     }
 
 
