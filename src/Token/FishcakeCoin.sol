@@ -29,7 +29,7 @@ contract FishcakeCoin is ERC20, Ownable {
     }
 
 
-    function Poolallocation() public onlyOwner{
+    function PoolAllocation() public onlyOwner{
         require(MintingFinished == false, "Minting has been finished");
         require(MiningPool != address(0), "Missing allocate MiningPool address");
         require(DirectSalePool != address(0), "Missing allocate DirectSalePool address");
@@ -37,12 +37,12 @@ contract FishcakeCoin is ERC20, Ownable {
         require(NFTSalesRewardsPool != address(0), "Missing allocate NFTSalesRewardsPool address");
         require(EarlyStageAirdropsPool != address(0), "Missing allocate EarlyStageAirdropsPool address");
         require(FoundationPool != address(0), "Missing allocate FoundationPool address");
-        _mint(MiningPool, MaxTotalSupply * 3 / 10);
-        _mint(DirectSalePool, MaxTotalSupply * 2 / 10);
-        _mint(InvestorSalePool, MaxTotalSupply / 10);
-        _mint(NFTSalesRewardsPool, MaxTotalSupply * 2 / 10);
-        _mint(EarlyStageAirdropsPool, MaxTotalSupply / 10);
-        _mint(FoundationPool, MaxTotalSupply / 10);
+        _mint(MiningPool, MaxTotalSupply * 3 / 10); // 30% of total supply
+        _mint(DirectSalePool, MaxTotalSupply * 2 / 10); // 20% of total supply
+        _mint(InvestorSalePool, MaxTotalSupply / 10); // 10% of total supply
+        _mint(NFTSalesRewardsPool, MaxTotalSupply * 2 / 10); // 20% of total supply
+        _mint(EarlyStageAirdropsPool, MaxTotalSupply / 10); // 10% of total supply
+        _mint(FoundationPool, MaxTotalSupply / 10); // 10% of total supply
         MintingFinished = true;
     }
 
