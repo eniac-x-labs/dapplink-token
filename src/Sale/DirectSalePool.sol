@@ -6,7 +6,7 @@ import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "../Token/FishcakeCoin.sol";
 import "../RedemptionPool.sol";
 contract DirectSalePool {
-
+    using SafeERC20 for ERC20;
     error NotEnoughFishcakeCoin();
 
 

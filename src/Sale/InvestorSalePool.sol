@@ -102,13 +102,13 @@ contract InvestorSalePool is Ownable{
 
     function calculateUSDT(InvestorLevel level, uint256 _amount ) public view returns(uint256) {
         if(level == InvestorLevel.One) {
-            return _amount  * OneUSD / (OneFCC * 50); // 1 FCC = 0.02 USDT
+            return _amount  * OneUSDT / (OneFCC * 50); // 1 FCC = 0.02 USDT
         } else if(level == InvestorLevel.Two) {
-            return _amount  * OneUSD / (OneFCC * 25); // 1 FCC = 0.04 USDT
+            return _amount  * OneUSDT / (OneFCC * 25); // 1 FCC = 0.04 USDT
         } else if(level == InvestorLevel.Three) {
-            return _amount  * OneUSD / (OneFCC * 20); // 1 FCC = 0.05 USDT
+            return _amount  * OneUSDT / (OneFCC * 20); // 1 FCC = 0.05 USDT
         } else if(level == InvestorLevel.Four) {
-            return _amount  * OneUSD  * 6 / (OneFCC * 100); // 1 FCC = 0.06 USDT
+            return _amount  * OneUSDT  * 6 / (OneFCC * 100); // 1 FCC = 0.06 USDT
         } else {
             revert InvestorLevelError();
         }

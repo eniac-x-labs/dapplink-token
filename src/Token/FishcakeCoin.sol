@@ -13,6 +13,7 @@ contract FishcakeCoin is ERC20, Ownable {
     address public NFTSalesRewardsPool;
     address public EarlyStageAirdropsPool;
     address public FoundationPool;
+    address public RedemptionPool;
     constructor() ERC20("Fishcake Coin", "FCC") Ownable(msg.sender) {
 
     }
@@ -36,9 +37,6 @@ contract FishcakeCoin is ERC20, Ownable {
     function setRedemptionPool(address _RedemptionPool) public onlyOwner {
         RedemptionPool = _RedemptionPool;
     }
-
-
-
 
 
     function PoolAllocation() public onlyOwner{
