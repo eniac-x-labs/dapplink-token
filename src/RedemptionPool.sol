@@ -41,7 +41,7 @@ contract RedemptionPool {
         if(USDTAmount == 0){
             revert USDTAmountIsZero();
         }
-        if(USDTAmount > balance){
+        if(USDTAmount > balance()){
             revert NotEnoughUSDT();
         }
         USDT.safeTransfer(msg.sender, USDTAmount);
@@ -58,7 +58,7 @@ contract RedemptionPool {
 
     function calculateUSDT(uint256 _amount) public view returns(uint256){
         // USDT balance / fishcakeCoin total supply
-        return balance() * _amount * OneUSDT / (OneFcc * fishcakeCoin.totalSupply());
+        return balance() * _amount * OneUSDT / (OneFCC * fishcakeCoin.totalSupply());
     }
 
 
