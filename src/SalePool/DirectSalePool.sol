@@ -22,8 +22,8 @@ contract DirectSalePool {
 
     }
 
-    function Buy(uint _amount) public {
-        uint USDTAmount = _amount * (10 ** 12) /  10; // 1FCC = 0.1 USDT
+    function Buy(uint256 _amount) public {
+        uint USDTAmount = _amount / (10 ** 12) /  10; // 1FCC = 0.1 USDT
         if(_amount > fishcakeCoin.balanceOf(address(this))){
             revert NotEnoughFishcakeCoin();
         }
