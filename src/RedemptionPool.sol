@@ -1,10 +1,9 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.0;
 
+pragma solidity 0.8.24;
 
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-
 import "./Token/FishcakeCoin.sol";
 
 contract RedemptionPool {
@@ -22,12 +21,10 @@ contract RedemptionPool {
     uint256 public constant OneFCC = 10 ** 18;
     uint256 public  UnlockTime;
 
-
     modifier IsUnlock() {
         require(block.timestamp > UnlockTime, "Redemption is locked");
         _;
     }
-
 
     constructor(address _fishcakeCoin) {
         fishcakeCoin = FishcakeCoin(_fishcakeCoin);
@@ -50,16 +47,12 @@ contract RedemptionPool {
 
     }
 
-
     function balance() public view returns(uint256){
         return USDT.balanceOf(address(this));
     }
-
 
     function calculateUSDT(uint256 _amount) public view returns(uint256){
         // USDT balance / fishcakeCoin total supply
         return balance() * _amount * OneUSDT / (OneFCC * fishcakeCoin.totalSupply());
     }
-
-
 }

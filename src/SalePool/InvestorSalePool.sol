@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.0;
+
+pragma solidity 0.8.24;
 
 import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
@@ -57,7 +58,7 @@ contract InvestorSalePool is Ownable{
     }
 
 
-    function QueryLevelWithUSDT(uint256 _amount) public view returns(InvestorLevel) {
+    function QueryLevelWithUSDT(uint256 _amount) public pure returns(InvestorLevel) {
         if(_amount >= 100_000  * OneUSDT) {
             return InvestorLevel.One;
         } else if( _amount < 100_000 * OneUSDT && _amount >= 10_000 * OneUSDT) {
@@ -72,7 +73,7 @@ contract InvestorSalePool is Ownable{
     }
 
 
-    function QueryLevelWithFCC(uint256 _amount) public view returns(InvestorLevel) {
+    function QueryLevelWithFCC(uint256 _amount) public pure returns(InvestorLevel) {
         if(_amount >= 5_000_000  * OneFCC) {
             return InvestorLevel.One;
         } else if( _amount < 5_000_000 * OneFCC && _amount >= 250_000 * OneFCC) {
@@ -86,7 +87,7 @@ contract InvestorSalePool is Ownable{
         }
     }
 
-    function calculateFCC(InvestorLevel level, uint256 _amount) public view returns(uint256) {
+    function calculateFCC(InvestorLevel level, uint256 _amount) public pure returns(uint256) {
         if(level == InvestorLevel.One) {
             return _amount * 50 * OneFCC / OneUSDT; // 1 USDT = 50 FCC
         } else if(level == InvestorLevel.Two) {
@@ -100,7 +101,7 @@ contract InvestorSalePool is Ownable{
         }
     }
 
-    function calculateUSDT(InvestorLevel level, uint256 _amount ) public view returns(uint256) {
+    function calculateUSDT(InvestorLevel level, uint256 _amount ) public pure returns(uint256) {
         if(level == InvestorLevel.One) {
             return _amount  * OneUSDT / (OneFCC * 50); // 1 FCC = 0.02 USDT
         } else if(level == InvestorLevel.Two) {

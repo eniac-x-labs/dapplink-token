@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity 0.8.20;
 
-import "openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
+pragma solidity 0.8.24;
+
+import {ERC20} from "openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
 contract FishcakeCoin is ERC20, Ownable {
     uint256 public constant MaxTotalSupply = 1_000_000_000 * 10 ** 18;
-    bool MintingFinished = false;
     address public MiningPool;
     address public DirectSalePool;
     address public InvestorSalePool;
@@ -14,6 +14,9 @@ contract FishcakeCoin is ERC20, Ownable {
     address public EarlyStageAirdropsPool;
     address public FoundationPool;
     address public RedemptionPool;
+
+    bool private MintingFinished = false;
+    
     constructor() ERC20("Fishcake Coin", "FCC") Ownable(msg.sender) {
 
     }
@@ -38,7 +41,6 @@ contract FishcakeCoin is ERC20, Ownable {
         RedemptionPool = _RedemptionPool;
     }
 
-
     function PoolAllocation() public onlyOwner{
         require(MintingFinished == false, "Minting has been finished");
         require(MiningPool != address(0), "Missing allocate MiningPool address");
@@ -59,11 +61,4 @@ contract FishcakeCoin is ERC20, Ownable {
     function burn(address user, uint256 _amount) public onlyRedemptionPool {
         _burn(user, _amount);
     }
-
-
-
-
-
-
-
 }
