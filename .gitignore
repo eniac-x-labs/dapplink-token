@@ -19,4 +19,6 @@
 out/
 # Go workspace file
 go.work
+# cache/
+cache/
 

@@ -1,69 +1,80 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity 0.8.20;
 
-import "openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
+pragma solidity 0.8.24;
+
+import {ERC20} from "openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
 contract FishcakeCoin is ERC20, Ownable {
-    uint256 public constant MaxTotalSupply = 1_000_000_000 * 10 ** 18;
-    bool MintingFinished = false;
-    address public MiningPool;
-    address public DirectSalePool;
-    address public InvestorSalePool;
-    address public NFTSalesRewardsPool;
-    address public EarlyStageAirdropsPool;
-    address public FoundationPool;
-    address public RedemptionPool;
-    constructor() ERC20("Fishcake Coin", "FCC") Ownable(msg.sender) {
+    uint256 public constant MAX_TOTAL_SUPPLY = 1_000_000_000 * 10 ** 18;
+    uint256 public constant MINING_POOL_ALLOCATION = (MAX_TOTAL_SUPPLY * 3) / 10; // 30% of total supply
+    uint256 public constant PUBLIC_SALE_POOL_ALLOCATION = (MAX_TOTAL_SUPPLY * 2) / 10; // 20% of total supply
+    uint256 public constant INVESTOR_SALE_POOL_ALLOCATION = MAX_TOTAL_SUPPLY / 10; // 10% of total supply
+    uint256 public constant NFT_SALES_REWARDS_POOL_ALLOCATION = (MAX_TOTAL_SUPPLY * 2) / 10; // 20% of total supply
+    uint256 public constant AIRDROP_POOL_ALLOCATION = MAX_TOTAL_SUPPLY / 10; // 10% of total supply
+    uint256 public constant FUNDATION_POOL_ALLOCATION = MAX_TOTAL_SUPPLY / 10; // 10% of total supply
+    address public miningPool;
+    address public publicSalePool;
+    address public investorSalePool;
+    address public nftSalesRewardsPool;
+    address public AirdropPool;
+    address public foundationPool;
+    address public redemptionPool;
 
-    }
+    bool private MintingFinished = false;
 
-    modifier onlyRedemptionPool() {
-        require(msg.sender == RedemptionPool,"Only RedemptionPool can call this function");
+    modifier onlyredemptionPool() {
+        require(msg.sender == redemptionPool, "Only redemptionPool can call this function");
         _;
     }
 
-    function setPoolAddress(address _MiningPool, address _DirectSalePool, address _InvestorSalePool, address _NFTSalesRewardsPool, address _EarlyStageAirdropsPool, address _FoundationPool) public onlyOwner {
+    constructor() ERC20("Fishcake Coin", "FCC") Ownable(msg.sender) {}
 
-        MiningPool = _MiningPool;
-        DirectSalePool = _DirectSalePool;
-        InvestorSalePool = _InvestorSalePool;
-        NFTSalesRewardsPool = _NFTSalesRewardsPool;
-        EarlyStageAirdropsPool = _EarlyStageAirdropsPool;
-        FoundationPool = _FoundationPool;
-
+    function setPoolAddress(
+        address _miningPool,
+        address _publicSalePool,
+        address _investorSalePool,
+        address _nftSalesRewardsPool,
+        address _AirdropPool,
+        address _foundationPool
+    ) external onlyOwner {
+        require(_miningPool != address(0), "MingingPool address is zero");
+        require(_publicSalePool != address(0), "_publicSalePool address is zero");
+        require(_investorSalePool != address(0), "_investorSalePool address is zero");
+        require(_nftSalesRewardsPool != address(0), "_nftSalesRewardsPool address is zero");
+        require(_AirdropPool != address(0), "_AirdropPool address is zero");
+        require(_foundationPool != address(0), "_foundationPool address is zero");
+        miningPool = _miningPool;
+        publicSalePool = _publicSalePool;
+        investorSalePool = _investorSalePool;
+        nftSalesRewardsPool = _nftSalesRewardsPool;
+        AirdropPool = _AirdropPool;
+        foundationPool = _foundationPool;
     }
 
-    function setRedemptionPool(address _RedemptionPool) public onlyOwner {
-        RedemptionPool = _RedemptionPool;
+    function setredemptionPool(address _redemptionPool) external onlyOwner {
+        require(_redemptionPool != address(0), "_redemptionPool can not be zero address");
+        redemptionPool = _redemptionPool;
     }
 
-
-    function PoolAllocation() public onlyOwner{
+    function PoolAllocation() external onlyOwner {
         require(MintingFinished == false, "Minting has been finished");
-        require(MiningPool != address(0), "Missing allocate MiningPool address");
-        require(DirectSalePool != address(0), "Missing allocate DirectSalePool address");
-        require(InvestorSalePool != address(0), "Missing allocate InvestorSalePool address");
-        require(NFTSalesRewardsPool != address(0), "Missing allocate NFTSalesRewardsPool address");
-        require(EarlyStageAirdropsPool != address(0), "Missing allocate EarlyStageAirdropsPool address");
-        require(FoundationPool != address(0), "Missing allocate FoundationPool address");
-        _mint(MiningPool, MaxTotalSupply * 3 / 10); // 30% of total supply
-        _mint(DirectSalePool, MaxTotalSupply * 2 / 10); // 20% of total supply
-        _mint(InvestorSalePool, MaxTotalSupply / 10); // 10% of total supply
-        _mint(NFTSalesRewardsPool, MaxTotalSupply * 2 / 10); // 20% of total supply
-        _mint(EarlyStageAirdropsPool, MaxTotalSupply / 10); // 10% of total supply
-        _mint(FoundationPool, MaxTotalSupply / 10); // 10% of total supply
+        require(miningPool != address(0), "Missing allocate miningPool address");
+        require(publicSalePool != address(0), "Missing allocate publicSalePool address");
+        require(investorSalePool != address(0), "Missing allocate investorSalePool address");
+        require(nftSalesRewardsPool != address(0), "Missing allocate nftSalesRewardsPool address");
+        require(AirdropPool != address(0), "Missing allocate AirdropPool address");
+        require(foundationPool != address(0), "Missing allocate foundationPool address");
+        _mint(miningPool, MINING_POOL_ALLOCATION);
+        _mint(publicSalePool, PUBLIC_SALE_POOL_ALLOCATION);
+        _mint(investorSalePool, INVESTOR_SALE_POOL_ALLOCATION);
+        _mint(nftSalesRewardsPool, NFT_SALES_REWARDS_POOL_ALLOCATION);
+        _mint(AirdropPool, AIRDROP_POOL_ALLOCATION);
+        _mint(foundationPool, FUNDATION_POOL_ALLOCATION);
         MintingFinished = true;
     }
 
-    function burn(address user, uint256 _amount) public onlyRedemptionPool {
+    function burn(address user, uint256 _amount) external onlyredemptionPool {
         _burn(user, _amount);
     }
-
-
-
-
-
-
-
 }
